@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dcr-poc
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dcr-poc
+  template:
+    metadata:
+      labels:
+        app: dcr-poc
+    spec:
+      containers:
+        - name: app
+          image: ishjay/dcr-poc:1.0
+          ports:
+            - containerPort: 9090
+          imagePullPolicy: Always      
+---
+# ... Service yaml def
+apiVersion: v1
+kind: Service
+metadata: 
+  name: dcr-poc
+spec:
+  selector:
+    app: dcr-poc
+  ports:
+    - port: 9091
+      targetPort: 9090
+  type: LoadBalancer
